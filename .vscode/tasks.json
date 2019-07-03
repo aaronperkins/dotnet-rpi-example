@@ -1,0 +1,61 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/SecuritySystem/SecuritySystem.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/SecuritySystem/SecuritySystem.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "publish-rpi",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "-r",
+                "linux-arm",
+                "${workspaceFolder}/SecuritySystem/SecuritySystem.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "send-to-rpi",
+            "dependsOn": "publish-rpi",
+            "command": "rsync",
+            "type": "process",
+            "args": [
+                "-rzh",
+                "--progress",
+                "${workspaceFolder}/SecuritySystem/bin/Debug/netcoreapp2.2/linux-arm/publish/",
+                "pi@raspberrypi.local:/home/pi/SecuritySystem"
+            ],
+            "problemMatcher": "$tsc"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/SecuritySystem/SecuritySystem.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        }
+    ]
+}
